@@ -2,15 +2,26 @@ package main
 
 import (
 	"Calculator_API/internal/calculationService"
-	"Calculator_API/internal/handlers"
 	"Calculator_API/internal/db"
+	"Calculator_API/internal/handlers"
+	"fmt"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	host := os.Getenv("HOST")
+	port := os.Getenv("PORT")
+
 	database, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v", err)
@@ -30,5 +41,5 @@ func main() {
 	e.PATCH("/calculations/:id", calcHandlers.PatchCalculations)
 	e.DELETE("/calculations/:id", calcHandlers.DeleteCalculations)
 
-	e.Start("localhost:8080")
+	e.Start(host + port)
 }

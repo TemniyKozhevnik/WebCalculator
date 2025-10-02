@@ -15,7 +15,7 @@ import (
 
 var db *gorm.DB
 
-func InitDB() (*gorm.DB, error) { 
+func InitDB() (*gorm.DB, error) {
 	var err error
 
 	loadEnv()
@@ -49,21 +49,21 @@ func loadEnv() {
 
 	if err := godotenv.Load(envPath); err != nil {
 		log.Printf("Warning: .env file not found at %s: %v", envPath, err)
-		
+
 		alternativePaths := []string{
 			".env",
 			"../.env",
 			"../../.env",
 			"Calculator_API/.env",
 		}
-		
+
 		for _, path := range alternativePaths {
 			if err := godotenv.Load(path); err == nil {
 				log.Printf("Loaded .env from: %s", path)
 				return
 			}
 		}
-		
+
 		log.Println("No .env file found, using environment variables or defaults")
 	} else {
 		log.Printf("Loaded .env from: %s", envPath)
